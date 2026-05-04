@@ -35,3 +35,7 @@ next-env.d.ts
 
 # Netlify
 .netlify
+
+# Large Assets (using Cloudinary instead)
+/Assets
+/public/Assets
