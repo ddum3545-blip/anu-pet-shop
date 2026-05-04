@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Lato, Cinzel, Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -44,11 +45,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${cormorant.variable} ${lato.variable} ${cinzel.variable} ${playfair.variable} ${montserrat.variable} antialiased`}>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={`${cormorant.variable} ${lato.variable} ${cinzel.variable} ${playfair.variable} ${montserrat.variable} antialiased`} suppressHydrationWarning={true}>
+        <ErrorBoundary>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

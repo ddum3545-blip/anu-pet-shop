@@ -302,8 +302,13 @@ export default function Home() {
   const [currentTheme, setCurrentTheme] = useState(themes[0]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedBreed, setSelectedBreed] = useState<any | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
   const orbitRef = useRef<HTMLDivElement>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
@@ -313,6 +318,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!hasMounted) return;
     const root = document.documentElement;
     root.style.setProperty("--background", currentTheme.bg);
     root.style.setProperty("--foreground", currentTheme.fg);
@@ -320,7 +326,18 @@ export default function Home() {
     root.style.setProperty("--secondary", currentTheme.fg);
     root.style.setProperty("--font-primary", currentTheme.font);
     root.style.setProperty("--font-body", currentTheme.bodyFont);
-  }, [currentTheme]);
+  }, [currentTheme, hasMounted]);
+
+  if (!hasMounted) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gold mb-4">Loading...</h1>
+          <Diamond className="text-gold animate-pulse mx-auto" size={64} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen selection:bg-gold/20 relative transition-colors duration-1000 bg-black">
